@@ -1,33 +1,57 @@
 classdef World < handle
     properties
-        body
+        bodies
+        g = [0, -9.81];
     end
     
     methods
         function obj = World()
-            obj.body = Body([2,2]);
+            body_shape =    [1,     2,   1.5,   2;
+                             1,     1.5, 1.5,   1.5];
+            body = Body([2,2], body_shape);
+            obj.addBody(body)
         end
         
         function checkCollisions(obj)
-            for i = 1:size(obj.body.particles,1)
-                for j = 1:size(obj.body.particles,2)
-                    if obj.body.particles(i,j).loc(2) <= 0
-                        obj.body.particles(i,j).loc(2) = 0;
-                        force = obj.calcNormalForce(i,j);
-                        obj.body.particles(i,j).applyForce(force)
+            for n = 1:length(obj.bodies)
+                for i = 1:size(obj.bodies(n).particles,1)
+                    for j = 1:size(obj.bodies(n).particles,2)
+                        if obj.bodies(n).particles(i,j).loc(2) <= 0
+                            obj.bodies(n).particles(i,j).loc(2) = 0;
+                            obj.bodies(n).particles(i,j).vel(2) = 0;
+                            force = obj.calcNormalForce(i,j);
+                            obj.bodies(n).particles(i,j).applyForce(force)
+                        end
                     end
                 end
             end
         end
         
+        function addBody(obj, body)
+            i = length(obj.bodies);
+            obj.bodies = [obj.bodies, body];
+        end
+        
         function force = calcNormalForce(obj, i, j)
-            force = [0, 5];
+            force = [0, 10];
+        end
+        
+        function applyGravity(obj)
+            for n = 1:length(obj.bodies)
+                for i = 1:size(obj.bodies(n).particles,1)
+                    for j = 1:size(obj.bodies(n).particles,2)
+                        m = obj.bodies(n).particles(i,j).mass;
+                        obj.bodies(n).particles(i,j).applyForce(obj.g*m)
+                    end
+                end
+            end
         end
         
         function update(obj,dt)
-            obj.body.applyForce([0,-1])
+            for n = 1:length(obj.bodies)
+                obj.bodies(n).update(dt)
+            end
             obj.checkCollisions()
-            obj.body.update(dt)
         end
     end
 end
