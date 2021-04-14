@@ -1,13 +1,17 @@
 clc, clear
-canvas = zeros(200);
+dt = 0.1;
+b = Body([2,2])
 
-p = Particle();
-
-for i = 1:100
-    p.applyForce([1; 1])
-    p.update()
-    p.loc
-    plot(p.loc(1), p.loc(2), "o")
+for i = 1:50
+    b.applyForce([0,-1])
+    b.update(dt)
     
-    pause(0.1)
+    b.plotBody()
+    hold on
+    b.plotBonds()
+    hold on
+    b.plotCOM();
+    hold off
+    
+    pause(dt)
 end
