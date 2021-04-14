@@ -7,13 +7,13 @@ classdef Particle < handle
     end
     
     methods
-%         function obj = Particle()
-%         end
+         function obj = Particle()
+         end
         
-         function obj = Particle(m_, l_, v_, a_)
+         function set(obj, l_, v_, m_)
              obj.loc = l_;
              obj.vel = v_;
-             obj.acc = a_;
+             obj.acc = [0,0];
              obj.mass = m_;
          end
         
