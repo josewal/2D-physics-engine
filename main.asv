@@ -3,14 +3,14 @@ dt = 0.1;
 w = World()
 
 for i = 1:50
-    w.update(dt)
+    b.applyForce([0,-1])
+    b.update(dt)
     
     w.body.plotBody()
     hold on
-    w.body.plotBonds()
+    body.plotBonds()
     hold on
-    w.body.plotCOM();
-    axis([0 3 -2 2])
+    body.plotCOM();
     hold off
     
     pause(dt)

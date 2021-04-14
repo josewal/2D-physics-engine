@@ -20,17 +20,19 @@ classdef Bond < handle
             pointer = (locDiff/diff);
             
             fs  =   (diff - obj.L0) * obj.Ks;
-            fd  =   dot(poitner, velDiff) * obj.Kd;
+            fd  =   dot(pointer, velDiff) * obj.Kd;
             f   =   (fs + fd)*pointer;
         end
         
-        function resolveBond(obj)
-            force = obj.calcForce(obj);
+        function applyBond(obj)
+            force = obj.calcForce();
             obj.A.applyForce(force);
-            obj.B.applyForce(force);
+            obj.B.applyForce(-force);
         end
         
+        
         function plotBond(obj)
-            plot([obj.A.loc
+            plot([obj.A.loc(1), obj.B.loc(1)], [obj.A.loc(2), obj.B.loc(2)], "b-")
+        end
     end
 end

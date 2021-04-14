@@ -2,9 +2,9 @@ classdef Bond < handle
     properties
         A
         B
-        Ks = 1;
-        Kd = 0.1;
-        L0 = 0.5;
+        Ks = 5;
+        Kd = 5;
+        L0 = 1;
     end
     
     methods
