@@ -1,26 +1,33 @@
 classdef Particle < handle
     properties
-        loc = [0,0];
-        vel= [0,0];
-        acc
-        mass
+        loc = [0; 0];
+        vel = [0; 0];
+        force = [0; 0];
+        mass = 1;
     end
     
     methods
-        function this = Particle(m_, l_, v_, a_)
-            this.loc = l_;
-            this.vel = v_;
-            this.acc = a_;
-            this.mass = m_;
+         function obj = Particle()
+         end
+        
+         function set(obj, l_, v_, m_)
+             obj.loc = l_;
+             obj.vel = v_;
+             obj.mass = m_;
+         end
+        
+        function applyForce(obj, force)
+            obj.force = obj.force + force;
         end
         
-        function applyForce(this, force)
-            this.acc = force/this.mass;
+        function update(obj)
+            obj.vel = obj.vel + obj.acc;
+            obj.force = [0,0];
+            obj.loc = obj.loc + obj.vel;
         end
         
-        function update(this)
-            this.vel = this.vel + this.acc;
-            this.loc = this.loc + this.loc;
+        function plotParticle(obj)
+            plot(obj.loc(1), obj.loc(2), "ro")
         end
     end
 end

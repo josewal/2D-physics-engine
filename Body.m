@@ -1,35 +1,92 @@
 classdef Body < handle
     properties
-        com
+        com = [0,0];
         particles
+        bonds
+        mass = 0;
+        
     end
     
     methods
         function obj = Body(size)
             for i = 1:size(1)
                 for j = 1:size(2)
-                    display([i j])
                     particles(i,j) = Particle();
-                    particles(i,j).set([i;j], [0;0], 1)
+                    particles(i,j).set([i j], [0 0], 1)
+                    obj.mass = obj.mass + particles(i,j).mass;
                 end
             end
             obj.particles = particles;
+            
+            bonds(1) = Bond(obj.particles(1,1), obj.particles(1,2));
+            bonds(2) = Bond(obj.particles(1,1), obj.particles(2,1));
+            bonds(3) = Bond(obj.particles(1,1), obj.particles(2,2));
+            bonds(4) = Bond(obj.particles(1,2), obj.particles(2,2));
+            bonds(5) = Bond(obj.particles(2,1), obj.particles(2,2));
+            bonds(6) = Bond(obj.particles(2,1), obj.particles(1,2));
+            obj.bonds = bonds;
         end
         
-        function update(obj)
-            for i = 1:size(obj.particles, 1)
-                for j = 1:size(obj.particles, 2)
-                    obj.particles(i,j).update()
+        function applyForce(obj, force)
+            for i = 1:size(obj.particles,1)
+                for j = 1:size(obj.particles,2)
+                    obj.particles(i,j).applyForce(force)
                 end
             end
         end
         
-        function resolveInnerForces()
-            
+        function updateParticles(obj, dt)
+            for i = 1:size(obj.particles,1)
+                for j = 1:size(obj.particles,2)
+                    obj.particles(i,j).update(dt)
+                end
+            end
         end
         
-        function dist = calcDist(A, B)
-            dist = (A.^2 + B.^2);
+        function applyBonds(obj)
+            for i = 1:size(obj.bonds,1)
+                for j = 1:size(obj.bonds,2)
+                    obj.bonds(i,j).applyBond()
+                end
+            end
+        end
+        
+        function update(obj,dt)
+            obj.applyBonds();
+            obj.updateParticles(dt);
+            obj.calcCOM();
+        end
+        
+        function calcCOM(obj)
+            a = 0;
+            for i = 1:size(obj.particles,1)
+                for j = 1:size(obj.particles,2)
+                    a = a + obj.particles(i,j).mass * obj.particles(i,j).loc;
+                end
+            end
+            obj.com = a/obj.mass;
+        end
+        
+        function plotBody(obj)
+            for i = 1:size(obj.particles, 1)
+                for j = 1:size(obj.particles, 2)
+                    obj.particles(i,j).plotParticle()
+                    hold on
+                end
+            end
+            hold off
+        end
+        
+        function plotBonds(obj)
+            for i = 1:length(obj.bonds)
+                obj.bonds(i).plotBond();
+                hold on
+            end
+            hold off
+        end
+        
+        function plotCOM(obj)
+            plot(obj.com(1), obj.com(2), "go")
         end
     end
 end
