@@ -6,10 +6,6 @@ classdef World < handle
     
     methods
         function obj = World()
-            body_shape =    [1,     2,   1.5,   2;
-                             1,     1.5, 1.5,   1.5];
-            body = Body([2,2], body_shape);
-            obj.addBody(body)
         end
         
         function checkCollisions(obj)
@@ -28,7 +24,6 @@ classdef World < handle
         end
         
         function addBody(obj, body)
-            i = length(obj.bodies);
             obj.bodies = [obj.bodies, body];
         end
         
@@ -52,6 +47,17 @@ classdef World < handle
                 obj.bodies(n).update(dt)
             end
             obj.checkCollisions()
+        end
+        
+        function plotWorld(obj)
+            for n = 1:length(obj.bodies)
+                obj.bodies(n).plotBody()
+                hold on
+                obj.bodies(n).plotBonds()
+                hold on
+                axis([0, 5, -1, 4])
+            end
+            hold off
         end
     end
 end

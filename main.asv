@@ -5,13 +5,13 @@ w = World()
 
 body_shape =    [1,     2,   1.5,   2;
     1,     1.5, 1.5,   1.5];
-body1 = Body([2,2], body_shape);
-w.addBody(body1)
+body = Body([2,2], body_shape);
+w.addBody(body)
 
 body_shape =    [1,     2,   1.5,   2;
-    1,     1.5, 1.5,   1.5] .* 2;
-body2 = Body([2,2], body_shape);
-w.addBody(body2)
+    1,     1.5, 1.5,   1.5] ;
+body = Body([2,2], body_shape);
+w.addBody(body)
 
 
 for i = 1:100
