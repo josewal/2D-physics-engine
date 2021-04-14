@@ -1,0 +1,26 @@
+classdef World < handle
+    properties
+        body
+    end
+    
+    methods
+        function obj = World()
+            obj.body = Body([2,2]);
+        end
+        
+        function checkCollisions(obj)
+            for i = 1:size(obj.body.particles,1)
+                for j = 1:size(obj.body.particles,2)
+                    if obj.body.particle(i,j).loc(2) <= 0
+                        force = obj.calcNormalForce(i,j)
+                        obj.body.particle(i,j).
+                    obj.body.particles(i,j).applyForce(force)
+                end
+            end
+        end
+        
+        function calcNormalForce(obj, i, j)
+            
+        end
+    end
+end
