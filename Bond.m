@@ -2,8 +2,8 @@ classdef Bond < handle
     properties
         A
         B
-        Ks = 5;
-        Kd = 5;
+        Ks = 300;
+        Kd = 3;
         L0 = 1;
     end
     
@@ -13,15 +13,18 @@ classdef Bond < handle
             obj.B = B_;
         end
         
-        function f = calcForce(obj)           
+        function f = calcForce(obj)
             locDiff =   obj.B.loc - obj.A.loc;
             velDiff =   obj.B.vel - obj.A.vel;
-            diff =   norm(locDiff);
-            pointer = (locDiff/diff);
-            
-            fs  =   (diff - obj.L0) * obj.Ks;
-            fd  =   dot(pointer, velDiff) * obj.Kd;
-            f   =   (fs + fd)*pointer;
+            L =         norm(locDiff);
+            if L ~= 0
+                pointer =   (locDiff/L);
+                fs  =   (L - obj.L0)^3 * obj.Ks;
+                fd  =   dot(pointer, velDiff) * obj.Kd;
+                f   =   (fs + fd)*pointer;
+            else
+                f = [0,0];
+            end     
         end
         
         function applyBond(obj)
