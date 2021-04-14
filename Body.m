@@ -3,16 +3,16 @@ classdef Body < handle
         com = [0,0];
         particles
         bonds
-        mass = 0;
+        mass = 0.1;
         
     end
     
     methods
-        function obj = Body(size)
+        function obj = Body(size, shape)
             for i = 1:size(1)
                 for j = 1:size(2)
                     particles(i,j) = Particle();
-                    particles(i,j).set([i j], [0 0], 1)
+                    particles(i,j).set([shape(i,2*j-1), shape(i,2*j)], [0,0], 1)
                     obj.mass = obj.mass + particles(i,j).mass;
                 end
             end
@@ -53,8 +53,8 @@ classdef Body < handle
         
         function update(obj,dt)
             obj.applyBonds();
-            obj.updateParticles(dt);
             obj.calcCOM();
+            obj.updateParticles(dt);  
         end
         
         function calcCOM(obj)
@@ -66,7 +66,7 @@ classdef Body < handle
             end
             obj.com = a/obj.mass;
         end
-        
+
         function plotBody(obj)
             for i = 1:size(obj.particles, 1)
                 for j = 1:size(obj.particles, 2)
