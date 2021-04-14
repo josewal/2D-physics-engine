@@ -1,7 +1,7 @@
 classdef World < handle
     properties
         bodies
-        g = [0, -9.81];
+        g = [0, -1];
     end
     
     methods

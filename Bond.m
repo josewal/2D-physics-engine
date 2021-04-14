@@ -3,14 +3,15 @@ classdef Bond < handle
         A
         B
         Ks = 300;
-        Kd = 3;
-        L0 = 1;
+        Kd = 5;
+        L0 = 0.75;
     end
     
     methods
-        function obj = Bond(A_, B_)
+        function obj = Bond(A_, B_, L0_)
             obj.A = A_;
             obj.B = B_;
+            obj.L0 = L0_;
         end
         
         function f = calcForce(obj)
