@@ -3,7 +3,7 @@ classdef Particle < handle
         loc = [0 0];
         vel = [0 0];
         force = [0 0];
-        mass = 0.1;
+        mass = 1;
     end
     
     methods

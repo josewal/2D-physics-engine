@@ -55,7 +55,9 @@ classdef World < handle
                 hold on
                 obj.bodies(n).plotBonds()
                 hold on
-                axis([0, 5, -1, 4])
+                obj.bodies(n).plotCOM()
+                hold on
+                axis([0, 5, -1, 7])
             end
             hold off
         end

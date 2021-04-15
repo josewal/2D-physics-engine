@@ -2,13 +2,12 @@ classdef Bond < handle
     properties
         A
         B
-        Ks = 500;
-        Kd = 1;
+        Ks = 1000;
+        Kd = 0.1;
         L0 = 0.5
         Lmin = 0.4;
         Lmax = 0.6;
-        dL = 0.1;
-        
+        dL = 0.25;
     end
     
     methods
@@ -18,6 +17,7 @@ classdef Bond < handle
             obj.L0 = L0_;
             obj.Lmin = L0_*(1-obj.dL);
             obj.Lmax = L0_*(1+obj.dL);
+            
         end
         
         function f = calcForce(obj)
