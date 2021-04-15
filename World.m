@@ -1,7 +1,7 @@
 classdef World < handle
     properties
         bodies
-        g = [0, -1];
+        g = [0, -9.81];
     end
     
     methods
@@ -14,7 +14,7 @@ classdef World < handle
                     for j = 1:size(obj.bodies(n).particles,2)
                         if obj.bodies(n).particles(i,j).loc(2) <= 0
                             obj.bodies(n).particles(i,j).loc(2) = 0;
-                            obj.bodies(n).particles(i,j).vel(2) = 0;
+                            obj.bodies(n).particles(i,j).vel(2) = -obj.bodies(n).particles(i,j).vel(2);
                             force = obj.calcNormalForce(i,j);
                             obj.bodies(n).particles(i,j).applyForce(force)
                         end
@@ -28,7 +28,7 @@ classdef World < handle
         end
         
         function force = calcNormalForce(obj, i, j)
-            force = [0, 10];
+            force = [0, 0];
         end
         
         function applyGravity(obj)

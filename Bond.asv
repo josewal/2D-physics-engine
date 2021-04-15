@@ -3,11 +3,11 @@ classdef Bond < handle
         A
         B
         Ks = 500;
-        Kd = 1;
+        Kd = 7;
         L0 = 0.5
         Lmin = 0.4;
         Lmax = 0.6;
-        dL = 0.1;
+        dL = 0.00;
         
     end
     
@@ -35,13 +35,13 @@ classdef Bond < handle
                 obj.B.vel = obj.B.vel - velDiff/2;
                 obj.A.vel = obj.A.vel + velDiff/2;
                 
-%                 L = obj.Lmin;
+                L = obj.Lmin;
                 elseif L  > obj.Lmax
                 Ldiff = obj.Lmax - L;
                 a = Ldiff*pointer;
                 obj.B.loc = obj.B.loc + a/2;
                 obj.A.loc = obj.A.loc - a/2;
-%                 L = obj.Lmax;
+                L = obj.Lmax;
                 end
                 fs  =   (L - obj.L0) * obj.Ks;
                 fd  =   dot(pointer, velDiff) * obj.Kd;

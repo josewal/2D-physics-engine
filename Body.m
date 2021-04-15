@@ -18,41 +18,40 @@ classdef Body < handle
             end
             obj.particles = particles;
             
-            bonds(1) = Bond(obj.particles(1,1), obj.particles(1,2), 1);
-            bonds(2) = Bond(obj.particles(1,1), obj.particles(2,1), 1);
-            bonds(3) = Bond(obj.particles(1,1), obj.particles(2,2), 1.4);
-            bonds(4) = Bond(obj.particles(1,2), obj.particles(2,2), 1);
-            bonds(5) = Bond(obj.particles(2,1), obj.particles(2,2), 1);
-            bonds(6) = Bond(obj.particles(2,1), obj.particles(1,2), 1.4);
-            bonds(7) = Bond(obj.particles(3,1), obj.particles(3,2), 1);
-            bonds(8) = Bond(obj.particles(3,2), obj.particles(2,2), 1);
-            bonds(9) = Bond(obj.particles(3,1), obj.particles(2,1), 1);
-            bonds(10) = Bond(obj.particles(3,1), obj.particles(2,2), 1.4);
-            bonds(11) = Bond(obj.particles(3,2), obj.particles(2,1), 1.4);
+            bonds(1) = Bond(obj.particles(1,1), obj.particles(1,2), 0.5);
+            bonds(2) = Bond(obj.particles(1,1), obj.particles(2,1), 0.5);
+            bonds(3) = Bond(obj.particles(1,1), obj.particles(2,2), 0.7);
+            bonds(4) = Bond(obj.particles(1,2), obj.particles(2,2), 0.5);
+            bonds(5) = Bond(obj.particles(2,1), obj.particles(2,2), 0.5);
+            bonds(6) = Bond(obj.particles(2,1), obj.particles(1,2), 0.7);
+            bonds(7) = Bond(obj.particles(3,1), obj.particles(3,2), 0.5);
+            bonds(8) = Bond(obj.particles(3,2), obj.particles(2,2), 0.5);
+            bonds(9) = Bond(obj.particles(3,1), obj.particles(2,1), 0.5);
+            bonds(10) = Bond(obj.particles(3,1), obj.particles(2,2), 0.7);
+            bonds(11) = Bond(obj.particles(3,2), obj.particles(2,1), 0.7);
             
-            bonds(12) = Bond(obj.particles(3,1), obj.particles(4,1), 1)
-            ;
-            bonds(13) = Bond(obj.particles(3,1), obj.particles(4,2), 1.4);
-            bonds(14) = Bond(obj.particles(3,2), obj.particles(4,1), 1.4);
-            bonds(15) = Bond(obj.particles(3,2), obj.particles(4,2), 1);
-            bonds(16) = Bond(obj.particles(4,1), obj.particles(4,2), 1);
+            bonds(12) = Bond(obj.particles(3,1), obj.particles(4,1), 0.5);
+            bonds(13) = Bond(obj.particles(3,1), obj.particles(4,2), 0.7);
+            bonds(14) = Bond(obj.particles(3,2), obj.particles(4,1), 0.7);
+            bonds(15) = Bond(obj.particles(3,2), obj.particles(4,2), 0.5);
+            bonds(16) = Bond(obj.particles(4,1), obj.particles(4,2), 0.5);
             
-            bonds(17) = Bond(obj.particles(1,2), obj.particles(1,3), 1);
-            bonds(18) = Bond(obj.particles(1,2), obj.particles(2,3), 1.4);
-            bonds(19) = Bond(obj.particles(1,3), obj.particles(2,3), 1);
-            bonds(20) = Bond(obj.particles(1,3), obj.particles(2,2), 1.4);
+            bonds(17) = Bond(obj.particles(1,2), obj.particles(1,3), 0.5);
+            bonds(18) = Bond(obj.particles(1,2), obj.particles(2,3), 0.7);
+            bonds(19) = Bond(obj.particles(1,3), obj.particles(2,3), 0.5);
+            bonds(20) = Bond(obj.particles(1,3), obj.particles(2,2), 0.7);
             
-            bonds(21) = Bond(obj.particles(2,2), obj.particles(2,3), 1);
-            bonds(22) = Bond(obj.particles(2,2), obj.particles(3,3), 1.4);
-            bonds(23) = Bond(obj.particles(2,3), obj.particles(3,3), 1);
-            bonds(24) = Bond(obj.particles(2,3), obj.particles(3,2), 1.4);
+            bonds(21) = Bond(obj.particles(2,2), obj.particles(2,3), 0.5);
+            bonds(22) = Bond(obj.particles(2,2), obj.particles(3,3), 0.7);
+            bonds(23) = Bond(obj.particles(2,3), obj.particles(3,3), 0.5);
+            bonds(24) = Bond(obj.particles(2,3), obj.particles(3,2), 0.7);
             
-            bonds(25) = Bond(obj.particles(3,2), obj.particles(3,3), 1);
-            bonds(26) = Bond(obj.particles(3,2), obj.particles(4,3), 1.4);
-            bonds(27) = Bond(obj.particles(3,3), obj.particles(4,3), 1);
-            bonds(28) = Bond(obj.particles(3,3), obj.particles(4,2), 1.4);
+            bonds(25) = Bond(obj.particles(3,2), obj.particles(3,3), 0.5);
+            bonds(26) = Bond(obj.particles(3,2), obj.particles(4,3), 0.7);
+            bonds(27) = Bond(obj.particles(3,3), obj.particles(4,3), 0.5);
+            bonds(28) = Bond(obj.particles(3,3), obj.particles(4,2), 0.7);
             
-            bonds(29) = Bond(obj.particles(4,2), obj.particles(4,3), 1);
+            bonds(29) = Bond(obj.particles(4,2), obj.particles(4,3), 0.5);
             
             obj.bonds = bonds;
         end
