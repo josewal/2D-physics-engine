@@ -14,6 +14,8 @@ classdef Bond < handle
         function obj = Bond(A_, B_, L0_)
             obj.A = A_;
             obj.B = B_;
+            obj.A.loc
+            obj.B.loc
             obj.L0 = L0_;
             obj.Lmin = L0_*(1-obj.dL);
             obj.Lmax = L0_*(1+obj.dL);

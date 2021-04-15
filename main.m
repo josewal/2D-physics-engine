@@ -3,12 +3,11 @@ dt = 0.0075;
 
 w = World();
 
-body_shape =    [1,     5,    1.5,    5,    2,    5;
-                1,      4.5,  1.5,    4.5,  2,    4.5;
-                1,      4,    1.5,    4     2,    4;
-                1,      3.5,  1.5,    3.5,  2,    3.5];
-body1 = Body([4,3], body_shape);
-w.addBody(body1)
+a = [1,0,0,0;1,1,0,0;0,1,1,1;0,0,1,0];
+b = ones(6);
+s = ShapeConstructor(b)
+
+w.addBody(s, [2.5,5])
 
 
 for i = 1:200

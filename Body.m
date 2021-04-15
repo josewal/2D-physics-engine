@@ -3,57 +3,31 @@ classdef Body < handle
         com = [0,0];
         particles
         bonds
-        mass = 0.1;
-        
+        mass = 1;
     end
     
     methods
-        function obj = Body(size, shape)
-            for i = 1:size(1)
-                for j = 1:size(2)
-                    particles(i,j) = Particle();
-                    particles(i,j).set([shape(i,2*j-1), shape(i,2*j)], [0,0], 1)
-                    obj.mass = obj.mass + particles(i,j).mass;
+        function obj = Body(shape)
+            obj.particles = shape.particles;
+            obj.bonds = shape.bonds;
+            
+            for i = 1:size(obj.particles,1)
+                for j = 1:size(obj.particles,2)
+                    obj.mass = obj.mass + obj.particles(i,j).mass;
                 end
             end
-            obj.particles = particles;
             
-            bonds(1) = Bond(obj.particles(1,1), obj.particles(1,2), 0.5);
-            bonds(2) = Bond(obj.particles(1,1), obj.particles(2,1), 0.5);
-            bonds(3) = Bond(obj.particles(1,1), obj.particles(2,2), 0.7);
-            bonds(4) = Bond(obj.particles(1,2), obj.particles(2,2), 0.5);
-            bonds(5) = Bond(obj.particles(2,1), obj.particles(2,2), 0.5);
-            bonds(6) = Bond(obj.particles(2,1), obj.particles(1,2), 0.7);
-            bonds(7) = Bond(obj.particles(3,1), obj.particles(3,2), 0.5);
-            bonds(8) = Bond(obj.particles(3,2), obj.particles(2,2), 0.5);
-            bonds(9) = Bond(obj.particles(3,1), obj.particles(2,1), 0.5);
-            bonds(10) = Bond(obj.particles(3,1), obj.particles(2,2), 0.7);
-            bonds(11) = Bond(obj.particles(3,2), obj.particles(2,1), 0.7);
+            obj.calcCOM();
             
-            bonds(12) = Bond(obj.particles(3,1), obj.particles(4,1), 0.5);
-            bonds(13) = Bond(obj.particles(3,1), obj.particles(4,2), 0.7);
-            bonds(14) = Bond(obj.particles(3,2), obj.particles(4,1), 0.7);
-            bonds(15) = Bond(obj.particles(3,2), obj.particles(4,2), 0.5);
-            bonds(16) = Bond(obj.particles(4,1), obj.particles(4,2), 0.5);
-            
-            bonds(17) = Bond(obj.particles(1,2), obj.particles(1,3), 0.5);
-            bonds(18) = Bond(obj.particles(1,2), obj.particles(2,3), 0.7);
-            bonds(19) = Bond(obj.particles(1,3), obj.particles(2,3), 0.5);
-            bonds(20) = Bond(obj.particles(1,3), obj.particles(2,2), 0.7);
-            
-            bonds(21) = Bond(obj.particles(2,2), obj.particles(2,3), 0.5);
-            bonds(22) = Bond(obj.particles(2,2), obj.particles(3,3), 0.7);
-            bonds(23) = Bond(obj.particles(2,3), obj.particles(3,3), 0.5);
-            bonds(24) = Bond(obj.particles(2,3), obj.particles(3,2), 0.7);
-            
-            bonds(25) = Bond(obj.particles(3,2), obj.particles(3,3), 0.5);
-            bonds(26) = Bond(obj.particles(3,2), obj.particles(4,3), 0.7);
-            bonds(27) = Bond(obj.particles(3,3), obj.particles(4,3), 0.5);
-            bonds(28) = Bond(obj.particles(3,3), obj.particles(4,2), 0.7);
-            
-            bonds(29) = Bond(obj.particles(4,2), obj.particles(4,3), 0.5);
-            
-            obj.bonds = bonds;
+        end
+        
+        function moveBody(obj, toWhere)
+            move = toWhere - obj.com;
+            for i = 1:size(obj.particles,1)
+                for j = 1:size(obj.particles,2)
+                    obj.particles(i,j).loc = obj.particles(i,j).loc + move;
+                end
+            end
         end
         
         function applyForce(obj, force)

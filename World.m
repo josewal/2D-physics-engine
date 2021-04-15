@@ -23,7 +23,9 @@ classdef World < handle
             end
         end
         
-        function addBody(obj, body)
+        function addBody(obj, shape_, r)
+            body = Body(shape_);
+            body.moveBody(r)
             obj.bodies = [obj.bodies, body];
         end
         
