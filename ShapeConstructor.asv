@@ -3,15 +3,15 @@ classdef ShapeConstructor < handle
         particles
         bonds
         
-        particlesList
-        bondsList
-        
+        particleMap
         model
+        boundries
     end
     
     methods
         function obj = ShapeConstructor(model_)
-            obj.model = model_;
+            obj.model = rot90(model_,-1);
+            obj.skeletonize();
         end
         
         
@@ -40,11 +40,61 @@ classdef ShapeConstructor < handle
             p = i*(size(obj.model,2)+1)+j;
         end
         
+        function findBoundries(obj)
+            n = 0;
+            for i = 1:size(obj.model,1) 
+                for j = 1:size(obj.model,2)+1
+                    if obj.isThere(i,j)
+                        if ~obj.isThere(i, j-1)
+                            n = n+1;
+                            iA = obj.particleMap(obj.encodePos(i,j));
+                            iB = obj.particleMap(obj.encodePos(i+1,j));
+                            obj.boundries(n,1) = iA;
+                            obj.boundries(n,2) = iB;
+                            
+                            obj.particles(iA).isBoundry = 1;
+                            obj.particles(iB).isBoundry = 1;
+                        end
+                        if ~obj.isThere(i-1, j)
+                            n = n+1;
+                            iA = obj.particleMap(obj.encodePos(i,j));
+                            iB = obj.particleMap(obj.encodePos(i,j+1));
+                            obj.boundries(n,1) = iA;
+                            obj.boundries(n,2) = iB;
+                            
+                            obj.particles(iA).isBoundry = 1;
+                            obj.particles(iB).isBoundry = 1;
+                        end
+                        if ~obj.isThere(i, j+1)
+                            n = n+1;
+                            iA = obj.particleMap(obj.encodePos(i,j+1));
+                            iB = obj.particleMap(obj.encodePos(i+1,j+1));
+                            obj.boundries(n,1) = iA;
+                            obj.boundries(n,2) = iB;
+                            
+                            obj.particles(iA).isBoundry = 1;
+                            obj.particles(iB).isBoundry = 1;
+                        end
+                        if ~obj.isThere(i+1, j)
+                            n = n+1;
+                            iA = obj.particleMap(obj.encodePos(i+1,j));
+                            iB = obj.particleMap(obj.encodePos(i+1,j+1));
+                            obj.boundries(n,1) = iA;
+                            obj.boundries(n,2) = iB;
+                            
+                            obj.particles(iA).isBoundry = 1;
+                            obj.particles(iB).isBoundry = 1;
+                        end
+                    end
+                end
+            end
+        end
+        
         function skeleton = skeletonize(obj)
             n = 0;
             m = 0;
             
-            particleMap = containers.Map('KeyType','double','ValueType','double');
+            obj.particleMap = containers.Map('KeyType','double','ValueType','double');
             
             for i = 1:size(obj.model,1)
                 for j = 1:size(obj.model,2)+1
@@ -52,40 +102,56 @@ classdef ShapeConstructor < handle
                         if obj.isThere(i,j-1)
                             n = n + 1;
                             particles_(n) = obj.newParticle(i+1,j);
-                            particleMap(obj.encodePos(i+1,j)) = n;
+                            obj.particleMap(obj.encodePos(i+1,j)) = n;
                             
-                            m = m + 1
-                            iB = particleMap(obj.encodePos(i,j));
-                            bonds_(m) = Bond(particles_(n), particles_(iB), 0.5);
+                            m = m + 1;
+                            iB = obj.particleMap(obj.encodePos(i,j));
+                            bonds_(m) = Bond(particles_(n), particles_(iB), 1);
                         end
                     else
                         if ~obj.isThere(i,j-1) && ~obj.isThere(i-1, j-1) && ~obj.isThere(i-1,j)
                             n = n + 1;
                             particles_(n) = obj.newParticle(i,j);
-                            particleMap(obj.encodePos(i,j)) = n;
+                            obj.particleMap(obj.encodePos(i,j)) = n;
                         end
                         
                         if ~obj.isThere(i-1, j+1) && ~obj.isThere(i-1,j)
                             n = n + 1;
                             particles_(n) = obj.newParticle(i,j+1);
-                            particleMap(obj.encodePos(i,j+1)) = n;
+                            obj.particleMap(obj.encodePos(i,j+1)) = n;
                         end
                         
                         n = n + 1;
                         particles_(n) = obj.newParticle(i+1,j);
-                        particleMap(obj.encodePos(i+1,j)) = n;
+                        obj.particleMap(obj.encodePos(i+1,j)) = n;
                         
                         if ~obj.isThere(i-1,j)
                             m = m + 1;
-                            iA = particleMap(obj.encodePos(i,j));
-                            iB = particleMap(obj.encodePos(i,j+1));
-                            bonds_(m) = Bond(particles_(iA), particles_(iB), 0.5);
+                            iA = obj.particleMap(obj.encodePos(i,j));
+                            iB = obj.particleMap(obj.encodePos(i,j+1));
+                            bonds_(m) = Bond(particles_(iA), particles_(iB), 1);
                         end
                         
-                        m = m + 1
-                        iA = particleMap(obj.encodePos(i,j));
-                        iB = particleMap(obj.encodePos(i,j+1));
-                        bonds_(m) = Bond(particles_(iA), particles_(iB), 0.5);
+                        m = m + 1;
+                        iA = obj.particleMap(obj.encodePos(i,j));
+                        iB = obj.particleMap(obj.encodePos(i+1,j));
+                        bonds_(m) = Bond(particles_(iA), particles_(iB), 1);
+                        
+                        m = m + 1;
+                        iA = obj.particleMap(obj.encodePos(i+1,j));
+                        iB = obj.particleMap(obj.encodePos(i,j+1));
+                        bonds_(m) = Bond(particles_(iA), particles_(iB), 1.41);
+                    end
+                    if obj.isThere(i,j-1)
+                        m = m + 1;
+                        iA = obj.particleMap(obj.encodePos(i+1,j));
+                        iB = obj.particleMap(obj.encodePos(i+1,j-1));
+                        bonds_(m) = Bond(particles_(iA), particles_(iB), 1);
+                        
+                        m = m + 1;
+                        iA = obj.particleMap(obj.encodePos(i+1,j));
+                        iB = obj.particleMap(obj.encodePos(i,j-1));
+                        bonds_(m) = Bond(particles_(iA), particles_(iB), 0.7);
                     end
                 end
                 
@@ -93,8 +159,7 @@ classdef ShapeConstructor < handle
             if n > 0
                 obj.particles = particles_;
                 obj.bonds = bonds_;
-                keys(particleMap)
-                values(particleMap)
+                obj.findBoundries();
             end
         end
         

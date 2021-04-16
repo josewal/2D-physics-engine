@@ -53,13 +53,13 @@ classdef World < handle
         
         function plotWorld(obj)
             for n = 1:length(obj.bodies)
-                obj.bodies(n).plotBody()
-                hold on
+%                 obj.bodies(n).plotBody()
+%                 hold on
                 obj.bodies(n).plotBonds()
                 hold on
                 obj.bodies(n).plotCOM()
                 hold on
-                axis([0, 5, -1, 7])
+                axis([0, 10, -1, 20])
             end
             hold off
         end

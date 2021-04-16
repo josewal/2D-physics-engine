@@ -3,13 +3,15 @@ classdef Body < handle
         com = [0,0];
         particles
         bonds
-        mass = 1;
+        boundries
+        mass = 0;
     end
     
     methods
         function obj = Body(shape)
             obj.particles = shape.particles;
             obj.bonds = shape.bonds;
+            obj.boundries = shape.boundries;
             
             for i = 1:size(obj.particles,1)
                 for j = 1:size(obj.particles,2)
@@ -91,5 +93,14 @@ classdef Body < handle
         function plotCOM(obj)
             plot(obj.com(1), obj.com(2), "go")
         end
+        
+%         function X = record(obj)
+%             X = obj.com;
+%             for i = 1:size(obj.boundries, 2)
+%                 side = [obj.particles(obj.boundries(i,1).loc),...
+%                         ...obj.particles(obj.boundries(i,2).loc)
+%                 X = [X;side];
+%             end
+%         end
     end
 end

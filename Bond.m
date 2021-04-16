@@ -2,23 +2,24 @@ classdef Bond < handle
     properties
         A
         B
-        Ks = 1000;
-        Kd = 0.1;
+        Ks = 700;
+        Kd = 10;
         L0 = 0.5
         Lmin = 0.4;
         Lmax = 0.6;
-        dL = 0.25;
+        dL = 0.2;
     end
     
     methods
-        function obj = Bond(A_, B_, L0_)
+        function obj = Bond(A_, B_, L0_, dL_, Ks_, Kd_)
             obj.A = A_;
             obj.B = B_;
-            obj.A.loc
-            obj.B.loc
             obj.L0 = L0_;
             obj.Lmin = L0_*(1-obj.dL);
             obj.Lmax = L0_*(1+obj.dL);
+            obj.Ks = Ks_;
+            obj.dL = dL_;
+            obj.Kd = Kd_;
             
         end
         
@@ -29,28 +30,28 @@ classdef Bond < handle
             if L ~= 0
                 pointer =   (locDiff/L);
                 if L < obj.Lmin
-                Ldiff = obj.Lmin - L;
-                a = Ldiff*pointer;
-                obj.B.loc = obj.B.loc + a/2;
-                obj.A.loc = obj.A.loc - a/2;
-                
-                obj.B.vel = obj.B.vel - velDiff/2;
-                obj.A.vel = obj.A.vel + velDiff/2;
-                
-%                 L = obj.Lmin;
+                    Ldiff = obj.Lmin - L;
+                    a = Ldiff*pointer;
+                    obj.B.loc = obj.B.loc + a/2;
+                    obj.A.loc = obj.A.loc - a/2;
+                    
+                    obj.B.vel = obj.B.vel - velDiff/1.01;
+                    obj.A.vel = obj.A.vel + velDiff/1.01;
+                    
+                    L = obj.Lmin;
                 elseif L  > obj.Lmax
-                Ldiff = obj.Lmax - L;
-                a = Ldiff*pointer;
-                obj.B.loc = obj.B.loc + a/2;
-                obj.A.loc = obj.A.loc - a/2;
-%                 L = obj.Lmax;
+                    Ldiff = obj.Lmax - L;
+                    a = Ldiff*pointer;
+                    obj.B.loc = obj.B.loc + a/2;
+                    obj.A.loc = obj.A.loc - a/2;
+                    %                 L = obj.Lmax;
                 end
                 fs  =   (L - obj.L0) * obj.Ks;
                 fd  =   dot(pointer, velDiff) * obj.Kd;
                 f   =   (fs + fd)*pointer;
             else
                 f = [0,0];
-            end     
+            end
         end
         
         function applyBond(obj)
@@ -61,7 +62,11 @@ classdef Bond < handle
         
         
         function plotBond(obj)
-            plot([obj.A.loc(1), obj.B.loc(1)], [obj.A.loc(2), obj.B.loc(2)], "b-")
+            if obj.A.isBoundry && obj.B.isBoundry && (obj.L0 ~= 1.41)
+                plot([obj.A.loc(1), obj.B.loc(1)], [obj.A.loc(2), obj.B.loc(2)], "b-", "LineWidth", 3)
+%             else
+%                 plot([obj.A.loc(1), obj.B.loc(1)], [obj.A.loc(2), obj.B.loc(2)], "r-", "LineWidth", 2)
+            end
         end
     end
 end

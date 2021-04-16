@@ -3,7 +3,8 @@ classdef Particle < handle
         loc = [0 0];
         vel = [0 0];
         force = [0 0];
-        mass = 1;
+        mass = 10;
+        isBoundry = 0;
     end
     
     methods
@@ -27,7 +28,10 @@ classdef Particle < handle
         end
         
         function plotParticle(obj)
-            plot(obj.loc(1), obj.loc(2), "ro")
+            if obj.isBoundry
+                plot(obj.loc(1), obj.loc(2), "ro")
+            end
+            
         end
     end
 end
